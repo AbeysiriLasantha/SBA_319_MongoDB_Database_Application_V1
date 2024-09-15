@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectToDb = require("./config/connectToDb"); // Database connection function
-//const notesController = require("./controllers/commentsController"); // Import controllers
+const commentsController = require("./controllers/commentsController"); // Import controllers
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -11,7 +11,17 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
+const setupRoutes = () => {
+  app.get("/", (req, res) => {
+    res.json({ hello: "world" });
+  });
 
+  app.get("/comments", commentsController.fetchComments);
+  //app.get("/note/:id", notesController.fetchNote);
+  //app.post("/createnotes", notesController.createNote);
+  //app.put("/updatenotes/:id", notesController.updateNote);
+  //app.delete("/deletenotes/:id", notesController.deleteNote);
+};
 
 // Async function to handle database connection and server setup
 const startServer = async () => {
@@ -22,7 +32,7 @@ const startServer = async () => {
     console.log("Database connected successfully.");
 
     // Separate block: API routes setup
-    //setupRoutes();
+    setupRoutes();
 
     // Starting the server
     app.listen(PORT, () => {
