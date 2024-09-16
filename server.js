@@ -17,10 +17,10 @@ const setupRoutes = () => {
   });
 
   app.get("/comments", commentsController.fetchComments);
-  //app.get("/note/:id", notesController.fetchNote);
-  //app.post("/createnotes", notesController.createNote);
-  //app.put("/updatenotes/:id", notesController.updateNote);
-  //app.delete("/deletenotes/:id", notesController.deleteNote);
+  app.get("/comment/:id", commentsController.fetchComment);
+  app.post("/createComments", commentsController.createComment);
+  app.put("/updateComments/:id", commentsController.updateComment);
+  app.delete("/deleteComments/:id", commentsController.deleteComment);
 };
 
 // Async function to handle database connection and server setup
