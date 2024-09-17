@@ -51,14 +51,15 @@ const createComment = async (req, res) => {
   const updateComment = async (req, res) => {
     console.log("Inside update") 
      // 1. Get data from req.body
-    const { title, userName, category } = req.body;
-    const commentId = req.params.id;
+     const commentId = req.params.id;
+     const { title, userName, category } = req.body;
+    
        // ------------------------------(2)
-       try{
-    const comment = await Comments.findByIdAndUpdate(commentId, {
-      title: title,
-      userName: userName,
-      category: category
+    try{
+      const comment = await Comments.findByIdAndUpdate(commentId, {
+        title: title,
+        userName: userName,
+        category: category
     });
     // ------------------------------(3)
     const updatedComment = await Comments.findById(commentId);
@@ -69,31 +70,32 @@ const createComment = async (req, res) => {
   };}
   
   const deleteComment = async (req, res) => {
-    console.log("Inside delete endoint")
-    // 1. Get id off url
-    // 2. Delete the record
-    // 3. Send a Response to confirm deletion
-    const commentId = req.params.id;
-    console.log(commentId)
-    // ------------------------------(1)
-    try {    
-    const comment = await Comments.findById(commentId);
-    console.log(comment)
-     if (!comment) {  
-      await Comments.deleteOne({
-        id: commentId,
-      });
-      res.json({ success: "Record Deleted Successfully" });
-     }else {
-      res.json({ success: "Record is not available" });
-     }
-    // ------------------------------(2)
+    console.log("Inside delete endpoint");
   
-    } catch {
-    res.json ("Record cannot be deleted");
-    // ------------------------------(3)
-  };}
-
+    // 1. Get id off url
+    const commentId = req.params.id;
+    console.log(commentId);
+  
+    try {
+      // 2. Find the comment by ID
+      const comment = await Comments.findById(commentId);
+      console.log(comment);
+  
+      // 3. Check if the comment exists
+      if (comment) {
+        // If comment exists, delete it
+        await Comments.deleteOne({ _id: commentId });
+        res.json({ success: "Record Deleted Successfully" });
+      } else {
+        // If comment does not exist, send appropriate response
+        res.json({ error: "Record not found" });
+      }
+    } catch (error) {
+      // 4. Catch and handle any errors
+      res.status(500).json({ error: "Record cannot be deleted" });
+    }
+  };
+  
 
   module.exports = {
     fetchComments,
