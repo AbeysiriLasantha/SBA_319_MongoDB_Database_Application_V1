@@ -15,7 +15,6 @@ const setupRoutes = () => {
   app.get("/", (req, res) => {
     res.json({ hello: "world" });
   });
-
   app.get("/comments", commentsController.fetchComments);
   app.get("/comment/:id", commentsController.fetchComment);
   app.post("/createComments", commentsController.createComment);
@@ -33,6 +32,7 @@ const startServer = async () => {
 
     // Separate block: API routes setup
     setupRoutes();
+    
 
     // Starting the server
     app.listen(PORT, () => {
